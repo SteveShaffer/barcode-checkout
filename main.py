@@ -20,11 +20,11 @@ class EntryHandler(AppHandler):
 
 class MainHandler(AppHandler):
     def get(self):
-        records = models.LogEntry.query().order(-models.LogEntry.created)  # TODO: Limit
+        records = models.LogEntry.query().order(-models.LogEntry.updated).fetch(20)
         self.response.write(template.render('index', {
             'barcode': self.request.get('barcode'),
             'entries': records,
-            'scan_return_url': urllib.quote('http://192.168.1.47:8080/scan/{CODE}'),  # TODO: Fix URL
+            'scan_return_url': urllib.quote(self.request.host_url + '/scan/{CODE}'),
         }))
 
 
