@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logs</title>
+</head>
+<body>
+<h2>New Entry</h2>
+<form action="scan">
+  <label>Manual Entry
+    <input type="text" name="barcode">
+  </label>
+</form>
+or
+<a href="zxing://scan/?ret={{ scan_return_url }}"><h1>Scan</h1></a>
+<h2>Log Entries</h2>
+<table>
+  <thead>
+  <tr><th>Student ID</th><th>Out</th><th>In</th></tr>
+  </thead>
+  <tbody>
+  {% for entry in entries %}
+    <tr>
+    <td><a href="entry/{{ entry.key.id() }}">{{ entry.student_id }}</a></td>
+    <td>{{ entry.time_out }}</td>
+    <td>{{ entry.time_in }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>
