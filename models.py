@@ -9,9 +9,27 @@ class AppModel(ndb.Model):
 
 
 class LogEntry(AppModel):
-    student_id = ndb.StringProperty(required=True)
+    student_id = ndb.StringProperty(required=True)  # TODO: Move terminology away from students
     time_out = ndb.DateTimeProperty()
     time_in = ndb.DateTimeProperty()
+
+    def flip(self):
+        if self.time_in:
+            if self.time_out:
+                new_record = LogEntry(student_id=self.student_id, time_out=self.time_in)
+                new_record.put()
+            else:
+                self.time_out = self.time_in
+                new_record = self
+            self.time_in = None
+            self.put()
+            return new_record
+        else:  # TODO: What if the second-to-last entry had no time_in?  Then should we shove it back onto that one?
+            # ...though that would never happen when coming from a scan because it would have checked that up front.
+            self.time_in = self.time_out
+            self.time_out = None
+            self.put()
+            return self
 
     @classmethod
     def scan_student_id(cls, student_id):  # TODO: Should this just be a function in the handler, not a class method?

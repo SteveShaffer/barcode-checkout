@@ -14,8 +14,16 @@ class EntryHandler(AppHandler):
     def get(self, entry_id):
         record = models.LogEntry.get_by_id(int(entry_id))
         self.response.write(template.render('entry', {
-            'record': record
+            'record': record,
+            'allow_flip': self.request.get('fresh') == 'yes'
         }))
+
+
+class EntryFlipHandler(AppHandler):
+    def post(self, entry_id):
+        record = models.LogEntry.get_by_id(int(entry_id))
+        record = record.flip()
+        self.redirect('/entry/{}/?fresh=yes'.format(record.key.id()))
 
 
 class MainHandler(AppHandler):
@@ -24,29 +32,26 @@ class MainHandler(AppHandler):
         self.response.write(template.render('index', {
             'barcode': self.request.get('barcode'),
             'entries': records,
-            'scan_return_url': urllib.quote(self.request.host_url + '/scan/{CODE}'),
+            'scan_return_url': urllib.quote(self.request.host_url + '/scan?barcode={CODE}'),
         }))
 
 
 class ScanHandler(AppHandler):
-    def process_scan(self, *args):
-        try:
-            barcode = args[0]
-        except IndexError:
-            barcode = self.request.get('barcode')
+    def process_scan(self):
+        barcode = self.request.get('barcode')
         record = models.LogEntry.scan_student_id(student_id=barcode)
-        self.redirect('/entry/' + str(record.key.id()))  # TODO: urlsafe?
+        self.redirect('/entry/{}/?fresh=yes'.format(record.key.id()))  # TODO: urlsafe?
 
-    def get(self, *args):
-        self.process_scan(*args)
+    def get(self):
+        self.process_scan()
 
-    def post(self, *args):
-        self.process_scan(*args)
+    def post(self):
+        self.process_scan()
 
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/entry/(.*)', EntryHandler),
+    ('/entry/(.*)/flip', EntryFlipHandler),
+    ('/entry/(.*)/', EntryHandler),
     ('/scan', ScanHandler),
-    ('/scan/(.*)', ScanHandler)
 ], debug=True)

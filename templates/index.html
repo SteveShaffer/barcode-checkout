@@ -21,7 +21,7 @@
   <tbody>
   {% for entry in entries %}
     <tr>
-    <td><a href="entry/{{ entry.key.id() }}">{{ entry.student_id }}</a></td>
+    <td><a href="entry/{{ entry.key.id() }}/">{{ entry.student_id }}</a></td>
     <td>{{ entry.time_out | relativedate }}</td><!--TODO: Do the formatting in a filter and support stuff like "2 min ago"-->
     <td>{{ entry.time_in | relativedate }}</td>
     </tr>
