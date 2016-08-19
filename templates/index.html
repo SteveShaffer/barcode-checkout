@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Logs</title>
-</head>
-<body>
-<h1>Barcode Checkout</h1>
+{% extends 'base.html' %}
+{% block title %}Logs{% endblock %}
+{% block content %}
 <h2><a href="zxing://scan/?ret={{ scan_return_url }}">Scan Barcode</a></h2>
 <em>(Requires "Barcode Scanner" app on Android)</em>
 <form action="scan" style="padding-top: 30px">
@@ -28,5 +23,4 @@
   {% endfor %}
   </tbody>
 </table>
-</body>
-</html>
+{% endblock %}

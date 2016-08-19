@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Just an Entry</title>
-</head>
-<body>
-<h1>{{ record.student_id }}</h1>
-<p>Time Out: {{ record.time_out }}</p>
-<p>Time In: {{ record.time_in }}</p><!--TODO: Give them the ability to edit it-->
+{% extends 'base.html' %}
+{% block title %}Just an Entry{% endblock %}
+{% block content %}
+<h2>{{ record.student_id }}</h2>
+<p>Time Out: {{ record.time_out | relativedate }}</p>
+<p>Time In: {{ record.time_in | relativedate }}</p><!--TODO: Give them the ability to edit it-->
 {% if allow_flip %}
   <form action="flip" method="post">
     <button type="submit">Nope!  Flip it!</button>
   </form>
 {% endif %}
 <p><a href="/">Go Home</a>
-</body>
-</html>
+{% endblock %}
