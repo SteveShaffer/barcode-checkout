@@ -3,11 +3,19 @@
 {% block content %}
   <h2>{{ record.student_id }}</h2>
   <table class="table table-bordered">
-  <thead>
-  <tr><th>Time Out</th><th>Time In</th></tr>
-  </thead>
   <tbody>
-  <tr><td>{{ record.time_out | relativedate }}</td><td>{{ record.time_in | relativedate }}</td></tr>
+  <tr>
+    <th>Time Out</th>
+    <td>{{ record.time_out | relativedate }}</td>
+  </tr>
+  <tr>
+    <th>Time In</th>
+    <td>{{ record.time_in | relativedate }}</td>
+  </tr>
+  <tr>
+    <th>Time Gone</th>
+    <td>{{ record.time_gone }}</td><!--TODO: Format correctly-->
+  </tr>
   </tbody>
   </table>
   {% if allow_flip %}

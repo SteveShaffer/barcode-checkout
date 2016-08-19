@@ -12,6 +12,7 @@ class LogEntry(AppModel):
     student_id = ndb.StringProperty(required=True)  # TODO: Move terminology away from students
     time_out = ndb.DateTimeProperty()
     time_in = ndb.DateTimeProperty()
+    time_gone = ndb.FloatProperty()
 
     def flip(self):
         if self.time_in:
@@ -22,6 +23,7 @@ class LogEntry(AppModel):
                 self.time_out = self.time_in
                 new_record = self
             self.time_in = None
+            self.time_gone = None
             self.put()
             return new_record
         else:  # TODO: What if the second-to-last entry had no time_in?  Then should we shove it back onto that one?
@@ -39,6 +41,7 @@ class LogEntry(AppModel):
             record = cls(student_id=student_id, time_out=now)
         else:  # TODO: Check time since last and maybe max out at an hour?
             record.time_in = now
+            record.time_gone = (record.time_in - record.time_out).total_seconds()
             # TODO: Calculate time_gone?
         record.put()
         return record

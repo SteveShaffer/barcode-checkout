@@ -11,7 +11,7 @@
     </form>
   {% else %}
     <a class="btn btn-large btn-primary" href="zxing://scan/?ret={{ scan_return_url }}">Scan Barcode</a>
-    <a class="btn btn-large btn-default" href="?manual=yes">Enter Manually</a>
+    <a class="btn btn-large btn-default" href="?manual=yes">Enter Manually</a>  {# Change this into just a textbox, not a "click then textbox" #}
   {% endif %}
   <hr>
   <h2>Last 20 Log Entries</h2>
