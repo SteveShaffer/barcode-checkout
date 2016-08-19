@@ -33,6 +33,7 @@ class MainHandler(AppHandler):
             'barcode': self.request.get('barcode'),
             'entries': records,
             'scan_return_url': urllib.quote(self.request.host_url + '/scan?barcode={CODE}'),
+            'show_manual': self.request.get('manual') == 'yes'
         }))
 
 

@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Logs{% endblock %}
 {% block content %}
-<h2><a href="zxing://scan/?ret={{ scan_return_url }}">Scan Barcode</a></h2>
-<em>(Requires "Barcode Scanner" app on Android)</em>
-<form action="scan" style="padding-top: 30px">
-  <label>or Manual Entry
-    <input type="text" name="barcode">
-  </label>
-</form>
-<h2>Last 20 Log Entries</h2>
-<table>
-  <thead>
-  <tr><th>Student ID</th><th>Out</th><th>In</th></tr>
-  </thead>
-  <tbody>
-  {% for entry in entries %}
-    <tr>
-    <td><a href="entry/{{ entry.key.id() }}/">{{ entry.student_id }}</a></td>
-    <td>{{ entry.time_out | relativedate }}</td><!--TODO: Do the formatting in a filter and support stuff like "2 min ago"-->
-    <td>{{ entry.time_in | relativedate }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+  {% if show_manual %}
+    <form class="manual-entry" action="scan">
+      <div class="form-group">
+        <label>Enter the barcode here
+          <input class="form-control" type="text" name="barcode">
+        </label>
+      </div>
+    </form>
+  {% else %}
+    <a class="btn btn-large btn-primary" href="zxing://scan/?ret={{ scan_return_url }}">Scan Barcode</a>
+    <a class="btn btn-large btn-default" href="?manual=yes">Enter Manually</a>
+  {% endif %}
+  <hr>
+  <h2>Last 20 Log Entries</h2>
+  <table class="table">
+    <thead>
+    <tr><th>Student ID</th><th>Out</th><th>In</th></tr>
+    </thead>
+    <tbody>
+    {% for entry in entries %}
+      <tr>
+      <td><a href="entry/{{ entry.key.id() }}/">{{ entry.student_id }}</a></td>
+      <td>{{ entry.time_out | relativedate }}</td><!--TODO: Do the formatting in a filter and support stuff like "2 min ago"-->
+      <td>{{ entry.time_in | relativedate }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
