@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Just an Entry{% endblock %}
 {% block content %}
-<h2>{{ record.student_id }}</h2>
-<p>Time Out: {{ record.time_out | relativedate }}</p>
-<p>Time In: {{ record.time_in | relativedate }}</p><!--TODO: Give them the ability to edit it-->
-{% if allow_flip %}
-  <form action="flip" method="post">
-    <button type="submit">Nope!  Flip it!</button>
-  </form>
-{% endif %}
-<p><a href="/">Go Home</a>
+  <h2>{{ record.student_id }}</h2>
+  <table class="table table-bordered">
+  <thead>
+  <tr><th>Time Out</th><th>Time In</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>{{ record.time_out | relativedate }}</td><td>{{ record.time_in | relativedate }}</td></tr>
+  </tbody>
+  </table>
+  {% if allow_flip %}
+    <form action="flip" method="post" class="pull-left">
+      <button class="btn btn-default btn-large" type="submit">
+        Change to Check {% if record.time_in %}Out{% else %}In{% endif %}
+      </button>
+    </form>
+  {% endif %}
+  <a class="btn btn-default btn-large pull-right" href="/">Go Home</a>
 {% endblock %}
